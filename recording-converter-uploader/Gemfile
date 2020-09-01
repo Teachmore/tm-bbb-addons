@@ -1,0 +1,7 @@
+source "https://rubygems.org"
+ruby "2.7.1"
+
+gem "sidekiq", "~> 5.2.8"
+gem "rack"
+gem "sinatra"
+gem 'mime-types', '~> 3.3', '>= 3.3.1'
