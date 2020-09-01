@@ -22,7 +22,7 @@
 
 require "trollop"
 require "/usr/local/recording-converter-uploader/worker"
-require File.expand_path('../../../lib/recordandplayback', __FILE__)
+require "/usr/local/bigbluebutton/core/lib/recordandplayback"
 
 opts = Trollop::options do
   opt :meeting_id, "Meeting id to archive", :type => String
