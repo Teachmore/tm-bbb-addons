@@ -53,53 +53,24 @@ class UploadToVdocipher
     LOGGER.info("End uploading #{meeting_id} to vdocipher with response #{response.code}: #{response.body}")
   end
 
-  # def perform(meeting_id, filepath, credentials_request_url)    
-  #   upload_credentials = get_upload_credentials(meeting_id, filepath, credentials_request_url)
-    
-  #   upload_credentials_data = upload_credentials["data"]
-    
-  #   url = URI(upload_credentials["url"])
-
-  #   http = Net::HTTP.new(url.host, url.port)
-
-  #   request = Net::HTTP::Post.new(url)
-  #   request["Content-Type"] = 'application/x-www-form-urlencoded'
-  #   params = {
-  #     'x-amz-credential' => upload_credentials_data["x-amz-credential"],
-  #     'x-amz-algorithm' => upload_credentials_data["x-amz-algorithm"],
-  #     'x-amz-date' => upload_credentials_data["x-amz-date"],
-  #     'x-amz-signature'=> upload_credentials_data["x-amz-signature"],
-  #     'key' => upload_credentials_data["key"],
-  #     'policy' => upload_credentials_data["policy"],
-  #     'success_action_status' => 201,
-  #     'success_action_redirect' => '',
-  #     'file' => File.open(filepath)
-  #   }
-  #   request.set_form(params, 'multipart/form-data')
-
-  #   LOGGER.info("Start uploading #{meeting_id} to vdocipher")
-
-  #   upload_response = http.request(request)
-
-  #   LOGGER.info("End uploading #{meeting_id} to vdocipher with response:  #{upload_response.read_body}")
-  # end
-
   def get_upload_credentials(meeting_id, filepath, credentials_request_url)
     uri = URI(credentials_request_url)
-    headers = {
-      'Authorization'=>'Bearer zh0gzfcza2h904j1noqzdurc2qy8ttm3goiwolfm',
-      'Content-Type' =>'application/json',
-      'Accept'=>'application/json'
-    }
+    http = Net::HTTP.new(uri.hostname, uri.port)
+    http.use_ssl = true
+    req = Net::HTTP::Post.new(uri)
     params = {
       uid: meeting_id,
       filename: meeting_id,
       file_type: 'video/mp4',
       file_size: File.size(filepath)
     }.to_json
-
+    req.body = params
+    req['Authorization'] = 'Bearer zh0gzfcza2h904j1noqzdurc2qy8ttm3goiwolfm'
+    req['Accept'] = 'application/json'
+    req['Content-Type'] = 'application/json'
+    
     LOGGER.info("Getting upload credentials from #{uri.scheme}://#{uri.host}#{uri.request_uri}")
-    upload_credentials_response = Net::HTTP.post(uri, params, headers)
+    upload_credentials_response = http.request(req)
     LOGGER.info("Response to upload credentials for recording of #{meeting_id}: #{upload_credentials_response.body}")
   
     return JSON.parse(upload_credentials_response.body)

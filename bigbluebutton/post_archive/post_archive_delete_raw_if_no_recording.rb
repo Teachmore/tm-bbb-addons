@@ -4,7 +4,7 @@
 require "trollop"
 require "net/http"
 require "uri"
-require File.expand_path('../../../lib/recordandplayback', __FILE__)
+require "/usr/local/bigbluebutton/core/lib/recordandplayback"
 
 # TODO: what about events in redis?
 # TODO: not sure about notes; are they kept in the etherpad?

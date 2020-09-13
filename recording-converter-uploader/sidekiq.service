@@ -19,8 +19,8 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/developer/tm-bbb-addons/recording-converter-uploader
-ExecStart=/home/developer/.rbenv/shims/bundle exec "sidekiq -e production -r ./worker.rb"
+WorkingDirectory=/usr/local/recording-converter-uploader
+ExecStart=/usr/local/bin/bundle exec sidekiq -e production -r ./worker.rb
 
 # Use `systemctl kill -s TSTP sidekiq` to quiet the Sidekiq process
 
