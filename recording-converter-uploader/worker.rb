@@ -26,7 +26,7 @@ class ConvertToMp4
   def perform(meeting_id, upload_recording_credentials_url)
     LOGGER.info("Start exporting #{meeting_id} to mp4")
 
-    bbb_recorder_cmd = "node /usr/local/bbb-recorder/export.js 'https://live.teachmore.in/playback/presentation/2.0/playback.html?meetingId=#{meeting_id}' #{meeting_id} 0 true '#{upload_recording_credentials_url}'"
+    bbb_recorder_cmd = "node /usr/local/bbb-recorder/export.js 'https://live2.teachmore.in/playback/presentation/2.0/playback.html?meetingId=#{meeting_id}' #{meeting_id} 0 true '#{upload_recording_credentials_url}'"
     
     status = system(bbb_recorder_cmd)
 
