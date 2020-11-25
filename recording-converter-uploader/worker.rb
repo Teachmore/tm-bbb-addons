@@ -12,22 +12,22 @@ Sidekiq.configure_server do |config|
   config.redis = { db: 1 }
 end
 
-LOGGER = Logger.new("/var/log/bigbluebutton/post_publish.log", 'weekly' )
+LOGGER = Logger.new("/var/log/bigbluebutton/tm_post_publish.log", 'weekly' )
 LOGGER.level = Logger::INFO
 
 
-#meeting_id used here is the internal meeting id created by bigbluebutton 
+#meeting_id used here is the internal meeting id created by bigbluebutton
 #which is session_id on teachmore
 
 class ConvertToMp4
   include Sidekiq::Worker
-  sidekiq_options :queue => :convert 
+  sidekiq_options :queue => :convert
 
   def perform(meeting_id, upload_recording_credentials_url)
     LOGGER.info("Start exporting #{meeting_id} to mp4")
 
     bbb_recorder_cmd = "node /usr/local/bbb-recorder/export.js 'https://live2.teachmore.in/playback/presentation/2.0/playback.html?meetingId=#{meeting_id}' #{meeting_id} 0 true '#{upload_recording_credentials_url}'"
-    
+
     status = system(bbb_recorder_cmd)
 
     LOGGER.info(status)
@@ -68,11 +68,11 @@ class UploadToVdocipher
     req['Authorization'] = 'Bearer zh0gzfcza2h904j1noqzdurc2qy8ttm3goiwolfm'
     req['Accept'] = 'application/json'
     req['Content-Type'] = 'application/json'
-    
+
     LOGGER.info("Getting upload credentials from #{uri.scheme}://#{uri.host}#{uri.request_uri}")
     upload_credentials_response = http.request(req)
     LOGGER.info("Response to upload credentials for recording of #{meeting_id}: #{upload_credentials_response.body}")
-  
+
     return JSON.parse(upload_credentials_response.body)
   end
 end
