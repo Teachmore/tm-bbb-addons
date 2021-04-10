@@ -36,7 +36,6 @@ BigBlueButton.logger = logger
 published_files = "/var/bigbluebutton/published/presentation/#{meeting_id}"
 meeting_metadata = BigBlueButton::Events.get_meeting_metadata("/var/bigbluebutton/recording/raw/#{meeting_id}/events.xml")
 
-jobid = ConvertToMp4.perform_async(meeting_id, meeting_metadata["uploadrecordingcredentialsurl"])
-BigBlueButton.logger.info("Added job #{jobid} for meeting_id #{meeting_id} to queue for converting to mp4 with recording upload url #{meeting_metadata['uploadrecordingcredentialsurl']} ")
+puts "Added job meeting_id #{meeting_id} to queue for converting to mp4 with recording upload url #{meeting_metadata['uploadrecordingcredentialsurl']}"
 
 exit 0
