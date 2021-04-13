@@ -25,8 +25,8 @@ ExecStart=/usr/local/bin/bundle exec sidekiq -e production -r ./worker.rb
 # Use `systemctl kill -s TSTP sidekiq` to quiet the Sidekiq process
 
 # !!! Change this to your deploy user account !!!
-User=bigbluebutton
-Group=bigbluebutton
+User=developer
+Group=developer
 UMask=0002
 
 # Greatly reduce Ruby memory fragmentation and heap usage
